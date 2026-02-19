@@ -1,117 +1,73 @@
---[[task.wait(3)
+task.wait(10)
 local camera = workspace.CurrentCamera
-local focus = game:GetService("RunService")
-
-camera.CameraType = Enum.CameraType.Scriptable
-
-local part = workspace:WaitForChild("StartPart")
-
-
-focus.RenderStepped:Connect(function()
-	camera.CFrame = CFrame.new(Vector3.new(0, 10, 10) + part.Position, part.Position - part.CFrame.LookVector * 10)
-
-end)]]
-
---[[task.wait(3)
-
-local startPart = workspace:WaitForChild("StartPart")
-local endPart = workspace:WaitForChild("EndPart")
-local camera = workspace.CurrentCamera
-camera.CameraType = Enum.CameraType.Scriptable
+local startPart = workspace:WaitForChild(("StartPart"))
+local endPart = workspace:WaitForChild(("EndPart"))
 local TweenService = game:GetService("TweenService")
-local focus = game:GetService("RunService")
 
-
-local startCF = CFrame.lookAt(startPart.Position + Vector3.new(0, 5, - 5), startPart.Position +  - endPart.CFrame.LookVector * 10)
-local endCF = CFrame.lookAt(endPart.Position + Vector3.new(0, 7, 7), endPart.Position + endPart.CFrame.LookVector * 10)
-
-local info = TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
-local tweenLook = TweenService:Create(camera, info, {CFrame = startCF})
-tweenLook:Play()
-tweenLook.Completed:Wait()
-
-local info = TweenInfo.new(3, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
-local tweenMove = TweenService:Create(camera, info, {CFrame = endCF})
-tweenMove:Play()
-tweenMove.Completed:Wait()
-]]
-
-task.wait(3)
-local camera = workspace.CurrentCamera
-camera.CameraType = Enum.CameraType.Scriptable
+--[[
+if not camera then
+	camera = workspace:GetPropertyChangedSignal("CurrentCamera"):Wait()
+end
 
 local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local head = character:WaitForChild("Head")
+if not player.Character then player.CharacterAdded:Wait() end
 
-camera.CFrame = CFrame.lookAt(head.Position, head.Position + head.CFrame.LookVector)
+repeat
+	camera.CameraType = Enum.CameraType.Scriptable
+	task.wait()
+until camera.CameraType == Enum.CameraType.Scriptable
+]]
 
-local visibleParts = character:GetDescendants()
-local originalTransparency = {}
 
-for _, item in ipairs(visibleParts) do
-	if item:IsA("BasePart") then
-		originalTransparency[item] = item.LocalTransparencyModifier
-		item.LocalTransparencyModifier = 1
-	end
+-- move(startPart, Vector3.new(0, 20, 0), 2)
+
+-- rotating things using Orientation
+function rotate(part, where, time)
+	local info = TweenInfo.new(time, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+	local tweenRotate = TweenService:Create(part, info, {Orientation = part.Orientation + where})
+	tweenRotate:Play()
+	tweenRotate.Completed:Wait()
+end
+-- rotate(startPart, Vector3.new(0, 180, 0), 2)
+
+function move(part, where, time)
+
+	local info = TweenInfo.new(time, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+	local tweenMove = TweenService:Create(part, info, {Position = part.Position + where})
+	tweenMove:Play()
+	return tweenMove
 end
 
-
-local RunService = game:GetService("RunService")
-local TweenService = game:GetService("TweenService")
-
-local yaw = Instance.new("NumberValue")
-yaw.Value = 0
-
-local pitch = Instance.new("NumberValue")
-pitch.Value = 0
-
-local playing = true
-
-RunService.RenderStepped:Connect(function()
-	if not playing then return end
-	
-	local base = CFrame.lookAt(head.Position, head.Position + head.CFrame.LookVector)
-	
-	local rotation = 
-		CFrame.Angles(0, math.rad(yaw.Value), 0) * 
-		CFrame.Angles(math.rad(pitch.Value), 0, 0)
-	
-	camera.CFrame = base * rotation
-end)
-
-function tweenRotate(valueObject, time, target, value)	
-	local tween = TweenService:Create(
-		valueObject,
-		TweenInfo.new(time, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),
-		{	
-			Value = target,
-			FieldOfView = value
-			
-		}
+-- rotating things using CFrame
+function cRotate(part, rotationVector, time)
+	local info = TweenInfo.new(time, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+	local goal = {}
+	goal.CFrame = part.CFrame * CFrame.Angles(
+		math.rad(rotationVector.X),
+		math.rad(rotationVector.Y),
+		math.rad(rotationVector.Z)
 	)
-	tween:Play()
-	return tween
+	
+	local tweenRotate = TweenService:Create(part, info, goal)
+	tweenRotate:Play()
+	return tweenRotate
 end
 
-tweenRotate(yaw, 3, 60, 70).Completed:Wait()
-
-tweenRotate(yaw, 3, -60, 70).Completed:Wait()
-
-tweenRotate(yaw, 3, 0, 70).Completed:Wait()
-
-tweenRotate(pitch, 4, 35, 50).Completed:Wait()
-
-
-task.wait(1)
-
-for part, value in pairs(originalTransparency) do
-	part.LocalTransparencyModifier = value
+-- cRotate(startPart, Vector3.new(0, 180, 0), 2)
+function fade(part, time)
+	local info = TweenInfo.new(time, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+	local tweenFade = TweenService:Create(part, info, {Transparency = 1})
+	tweenFade:Play()
+	return tweenFade
 end
 
-playing = false
 
+local t1 = move(startPart, Vector3.new(0, 20, 2), 2)
+local t2 = cRotate(startPart, Vector3.new(0, 180, 0), 2)
+local t3 = fade(startPart, 2)
 
-
+t1.Completed:Wait()
+t2.Completed:Wait()
+t3.Completed:Wait()
 
 
