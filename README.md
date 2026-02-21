@@ -339,3 +339,4 @@ This project is an experiment in **interactive feeling design**.
 Instead of rewarding the player for winning,
 it tries to make the player *feel something while moving forward*.
 
+Testing git workflow
