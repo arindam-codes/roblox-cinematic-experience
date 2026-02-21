@@ -4,6 +4,8 @@ Cinematic camera, lighting, and player-control framework for immersive storytell
 
 <img src="assets/helloValentine.gif" width="100%">
 
+[![Play on Roblox](https://img.shields.io/badge/Play%20on-Roblox-red?style=for-the-badge&logo=roblox)](https://www.roblox.com/games/90378282464127/Hello-Valentine)
+
 A narrative-driven Roblox experience focused on **atmosphere, emotion, and cinematic control systems** rather than traditional gameplay mechanics.
 
 Instead of score, combat, or progression systems — this project explores how **lighting, camera movement, player control, and environment transitions** can be used to create a feeling-based interactive experience.
