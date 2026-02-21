@@ -1,5 +1,9 @@
 # 🌌 Hello Valentine — Cinematic Roblox Experience
 
+Cinematic camera, lighting, and player-control framework for immersive storytelling in Roblox.
+
+<img src="assets/helloValentine.gif" width="100%">
+
 A narrative-driven Roblox experience focused on **atmosphere, emotion, and cinematic control systems** rather than traditional gameplay mechanics.
 
 Instead of score, combat, or progression systems — this project explores how **lighting, camera movement, player control, and environment transitions** can be used to create a feeling-based interactive experience.
@@ -21,6 +25,15 @@ The experience guides the player through a sequence of memories using:
 * Lighting psychology
 * Movement restriction
 * Timed pacing
+
+---
+
+🌍 World Atmosphere
+
+<img src="assets/FloatinDreamyIslands.png" width="100%">
+
+The world establishes emotional context before mechanics.
+Environment acts as narrative language rather than decoration.
 
 ---
 
@@ -79,6 +92,8 @@ Prevents global disruption in multiplayer.
 
 ### 3. Cinematic Camera System
 
+<img src="assets/CutsceneSky.png" width="100%">
+
 Custom scriptable camera built using `CFrame` math.
 
 Features:
@@ -124,6 +139,10 @@ Then safely restored.
 ---
 
 ### 6. Dynamic Lighting Transition System
+
+The world changes emotional tone using fog, bloom, and color shifts.
+
+<img src="assets/TransformationOfHearts.png" width="100%"> <img src="assets/TransformationOfPortalSky.png" width="100%">
 
 Environment reacts to progression:
 
